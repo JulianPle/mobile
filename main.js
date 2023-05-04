@@ -43,19 +43,19 @@ map.locate({
     watch: true
 });
 
-
 //map bei gefundenem Standort
 map.on('locationfound', function (evt) {  //evt=event (Objekt)
     let radius = evt.accuracy;
 
     L.marker(evt.latlng).addTo(map)
-        marker.setLatLng(evt.latlng);
-        marker.bindTooltip (`You are within ${Math.round(radius)} meters from this point`).openTooltip();
+    marker.setLatLng(evt.latlng);
+    marker.bindTooltip(`You are within ${Math.round(radius)} meters from this point`).openTooltip();
 
     //L.circle(evt.latlng, radius).addTo(map);
     circle.setLatLng(evt.latlng);
     circle.setRadius(radius);
 });
+
 //map bei verweigertem Standort
 map.on('locationerror', function (evt) {
     alert(evt.message);
