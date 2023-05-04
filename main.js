@@ -36,19 +36,17 @@ L.control.scale({
 //Leaflet Geolocation
 map.locate({setView: true, maxZoom: 16});
 
-function onLocationFound(e) {
-    var radius = e.accuracy;
 
-    L.marker(e.latlng).addTo(map)
-        .bindPopup("You are within " + radius + " meters from this point").openPopup();
+//map bei gefundenem Standort
+map.on('locationfound', function (evt) {  //evt=event (Objekt)
+    let radius = evt.accuracy;
 
-    L.circle(e.latlng, radius).addTo(map);
-}
+    L.marker(evt.latlng).addTo(map)
+        .bindPopup (`You are within ${Math.round(radius)} meters from this point`).openPopup();
 
-map.on('locationfound', onLocationFound);
-
-function onLocationError(e) {
-    alert(e.message);
-}
-
-map.on('locationerror', onLocationError);
+    L.circle(evt.latlng, radius).addTo(map);
+});
+//map bei verweigertem Standort
+map.on('locationerror', function (evt) {
+    alert(evt.message);
+});
