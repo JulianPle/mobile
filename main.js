@@ -34,7 +34,14 @@ L.control.scale({
 }).addTo(map);
 
 //Leaflet Geolocation
-map.locate({setView: true, maxZoom: 16});
+let circle = L.circle([0, 0], 0).addTo(map);
+let marker = L.marker([0, 0]).addTo(map);
+
+map.locate({
+    setView: true,
+    maxZoom: 16,
+    watch: true
+});
 
 
 //map bei gefundenem Standort
@@ -42,9 +49,12 @@ map.on('locationfound', function (evt) {  //evt=event (Objekt)
     let radius = evt.accuracy;
 
     L.marker(evt.latlng).addTo(map)
-        .bindPopup (`You are within ${Math.round(radius)} meters from this point`).openPopup();
+        marker.setLatLng(evt.latlng);
+        marker.bindTooltip (`You are within ${Math.round(radius)} meters from this point`).openTooltip();
 
-    L.circle(evt.latlng, radius).addTo(map);
+    //L.circle(evt.latlng, radius).addTo(map);
+    circle.setLatLng(evt.latlng);
+    circle.setRadius(radius);
 });
 //map bei verweigertem Standort
 map.on('locationerror', function (evt) {
